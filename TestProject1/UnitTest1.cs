@@ -9,16 +9,7 @@ namespace TestProject1
 {
     
     public class UnitTest1
-    {        private IConfiguration Configuration { get; }
-
-        public UnitTest1()
-        {
-            var builder = new ConfigurationBuilder().AddUserSecrets<UnitTest1>();
-
-            Configuration = builder.Build();
-        }
-
-
+    {        
         [Theory]
         [InlineData("Sne", -100, "Sne", -20, "Nok på tide at bruge vinter jakken")]
         [InlineData("Sne", -20, "Sne", -100, "Blot det sædvanlige kedelige vejr")]
@@ -38,9 +29,7 @@ namespace TestProject1
                 YesterdayTemp = YesterdayTemp
             };
 
-            var key = Configuration["key"];
-
-            string result = await Vejrudsigten.Services.WeatherForecast.GetForecastAsync(key);
+            string result = await Vejrudsigten.Services.WeatherForecast.GetForecastAsync("");
 
             Assert.Equal(ExpectedResult, result);
         }
@@ -61,8 +50,6 @@ namespace TestProject1
                 TodayTemp = TodayTemp,
                 YesterdayTemp = YesterdayTemp
             };
-
-            var key = Configuration["key"];
 
             await Assert.ThrowsAsync<ArgumentException>(() => Vejrudsigten.Services.WeatherForecast.GetForecastAsync(key));
         }
