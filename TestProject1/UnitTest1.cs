@@ -51,10 +51,8 @@ namespace TestProject1
                 YesterdayTemp = YesterdayTemp
             };
 
-            await Assert.ThrowsAsync<ArgumentException>(() => Vejrudsigten.Services.WeatherForecast.GetForecastAsync(key));
+            await Assert.ThrowsAsync<ArgumentException>(() => Vejrudsigten.Services.WeatherForecast.GetForecastAsync(""));
         }
-
-
     }
 
     public class WeatherServiceTest : IWeatherService
