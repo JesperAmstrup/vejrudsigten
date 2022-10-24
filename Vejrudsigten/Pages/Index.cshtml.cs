@@ -30,6 +30,8 @@ namespace Vejrudsigten.Pages
                 ViewData.Add("Vejrudsigten", "Hov! Du har glemt at angive nøglen i appsettings.local.json. Gå tilbage til opgavebeskrivelsen og se hvordan");
             } else
             {
+                WeatherForecast.service = new WeatherService();
+
                 ViewData.Add("Vejrudsigten", await WeatherForecast.GetForecastAsync(key));
             }
 

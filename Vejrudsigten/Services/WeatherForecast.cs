@@ -7,52 +7,44 @@ namespace Vejrudsigten.Services
 {
     public static class WeatherForecast
     {
-        private static string _weatherForecastDefaultMessage = "Blot det sædvanlige kedelige vejr";
+        public static IWeatherService service { get; set; }  
+
 
         public static async Task<string> GetForecastAsync(string key)
-        {
-            WeatherService service = new WeatherService();
+        {            
             var todayInfo = await service.GetTodaysWeather(key, "Kolding");
             var yesterdayInfo = await service.GetYesterdaysWeather(key, "Kolding");
 
             //String result = "Vejret i Kolding er {0} og der er {1} grader. I går var det {2} og {3} grader";
             //return String.Format(result, todayInfo.Conditions, todayInfo.Temperature, yesterdayInfo.Conditions, yesterdayInfo.Temperature);
 
-            string WeatherMessage = "";
-            try
-            {
-                WeatherMessage = GetWeatherForecastMessage(todayInfo.Conditions, todayInfo.Temperature, yesterdayInfo.Conditions, yesterdayInfo.Temperature);
-            }
-            catch
-            {
-                WeatherMessage = _weatherForecastDefaultMessage;
-            }
-
-            return WeatherMessage;
+            return GetWeatherForecastMessage(todayInfo.Conditions, todayInfo.Temperature, yesterdayInfo.Conditions, yesterdayInfo.Temperature);
         }
 
         public static string GetWeatherForecastMessage(string TodayWeatherType, double TodayTemp, string YesterdayWeatherType, double YesterdayTemp)
         {
+            string _weatherForecastDefaultMessage = "Blot det sædvanlige kedelige vejr";
+
             List<WeatherForecastMessage> WeatherForecastMessages = GetWeatherForecastMessages();
 
             if (TodayTemp>100 || YesterdayTemp> 100)
             {
-                throw new Exception("Bor du på Venus?");
+                throw new ArgumentException("Bor du på Venus?");
             }
 
             if (TodayTemp < -100 || YesterdayTemp < -100)
             {
-                throw new Exception("Bor du på Uranus?");
+                throw new ArgumentException("Bor du på Uranus?");
             }
 
             if(!"Alle,Klart vejr,Skyet,Andet,Regn,Sne".Contains(TodayWeatherType))
             {
-                throw new Exception("Den vejr type kender jeg ikke: '"+ TodayWeatherType + "'");
+                throw new ArgumentException("Den vejr type kender jeg ikke: '"+ TodayWeatherType + "'");
             }
 
             if (!"Alle,Klart vejr,Skyet,Andet,Regn,Sne".Contains(YesterdayWeatherType))
             {
-                throw new Exception("Den vejr type kender jeg ikke: '" + YesterdayWeatherType + "'");
+                throw new ArgumentException("Den vejr type kender jeg ikke: '" + YesterdayWeatherType + "'");
             }
 
 

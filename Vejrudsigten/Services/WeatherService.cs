@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Vejrudsigten.Services
 {
-    public class WeatherService
+    public class WeatherService : IWeatherService
     {
         public async Task<WeatherInfo> GetTodaysWeather(string key, string location)
         {
@@ -19,7 +19,7 @@ namespace Vejrudsigten.Services
             return weatherInfo;
         }
 
-        public async Task<WeatherInfo> GetYesterdaysWeather(string key, string location)
+        public async Task<WeatherInfo> GetYesterdaysWeather(string key, string location) 
         {
             HttpClient client = new HttpClient();
             String urlPattern = "https://smartweatherdk.azurewebsites.net/api/GetYesterdaysWeather?key={0}&location={1}";
